@@ -7,7 +7,6 @@ const notes = require('./db/db.json')
 const app = express()
 const PORT = process.env.PORT || 3001;
 
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -46,6 +45,7 @@ app.post('/api/notes', (req, res) => {
         }
         console.log(response);
         res.status(201).json(response);
+        app.get('/api/notes', (req, res) => res.json(notes))
     } else {
         res.status(500).json('Error in posting note')
     }
