@@ -1,4 +1,5 @@
-const fs = require('fs')
+const fs = require('fs');
+const { parse } = require('path');
 const util = require('util');
 const notes = require('../routes/notes');
 
@@ -17,21 +18,30 @@ const readAndWriteFile = (content, file) => {
     })
 }
 
+const getNoteIndex = (parsedData, noteId) => {
+    for(let i = 0; i<parsedData.length; i++) {
+        if (parsedData[i].id == noteId) {
+            return i
+        }
+    }}
+
 const deleteNote = (file, noteId) => {
     fs.readFile(file, 'utf8', (err, data) => {
         if(err) {
             console.error(err) 
         } else {
             const parsedData = JSON.parse(data)
-            const selectedNote = parsedData.filter(() => {
-                return notes.id === noteId
-            })
-            console.log(selectedNote)
-            const newArray = parsedData.splice(parsedData.indexOf(selectedNote), 1)
-            writeToFile(file, newArray)
+            console.log('DATA ARRAY')
+            parsedData.splice(getNoteIndex(parsedData, noteId),1)
+            console.log(parsedData)
+            // getNoteIndex(parsedData, noteId)
+            writeToFile(file, parsedData)
+            // const newArray = parsedData.splice(parsedData.indexOf(selectedNote), 1)
+            // writeToFile(file, newArray)
         }
     })
 }
+
 
 
 function writeToFile(fileName, content) {
